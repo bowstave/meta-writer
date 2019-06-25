@@ -1,0 +1,38 @@
+{
+  "name": "@bowstave/meta-writer",
+  "version": "0.1.0",
+  "description": "Basic utility to write data to Metanet.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "meta-writer": "./index.js"
+  },
+  "keywords": [],
+  "author": "bowstave",
+  "contributors": [
+    "Simon Ordish <simon.ordish@masagi.co.uk>",
+    "Liam Missin <liam.missin@gmail.com>",
+    "Jack Davies <j.davies@nchain.com>"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "bitcore-explorers": "^1.0.1",
+    "bsv": "^0.27.1",
+    "command-line-args": "^5.1.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bowstave/meta-writer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bowstave/meta-writer/issues"
+  },
+  "homepage": "https://github.com/bowstave/meta-writer#readme"
+}
