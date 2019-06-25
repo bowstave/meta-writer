@@ -227,7 +227,7 @@ async function addNode (fundingKey, parentKey, childKey, script) {
     }
   } else {
     parentPath = parts.slice(0, -1).join('/')
-    parentKey = masterPrivateKey.deriveChild('m//' + parentPath)
+    parentKey = masterPrivateKey.deriveChild('m/' + parentPath)
   }
 
   const childPath = parts.join('/')
