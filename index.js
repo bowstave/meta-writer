@@ -252,9 +252,14 @@ async function addNode (fundingKey, parentKey, childKey, script) {
     oprParts.push(Buffer.from(options.src).toString('hex'))
   }
 
-  const script = bsv.Script.fromASM(oprParts.join(' ')).toString()
+  const script = bsv.Script.fromASM(oprParts.join(' '))
 
-  const tx = await addNode(fundingKey, parentKey, childKey, script)
+  if (script.toBuffer().length > 100000) {
+    console.log(`Maximum OP_RETURN size is 100000 bytes. Script is ${script.toBuffer().length} bytes.`)
+    process.exit(1)
+  }
+
+  const tx = await addNode(fundingKey, parentKey, childKey, script.toString())
 
   data[childPath] = tx.toString()
   dumpData(name, data)
