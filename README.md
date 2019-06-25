@@ -3,7 +3,7 @@
 Simple command-line tool that let's you upload metanet nodes.
 
 ## Installation instructions
-`npm install -g meta-writer`
+`npm install -g @bowstave/meta-writer`
 
 
 ## Developer instructions
