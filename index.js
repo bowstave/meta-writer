@@ -243,6 +243,7 @@ async function addNode (fundingKey, parentKey, childKey, script) {
   oprParts.push(Buffer.from(txid).toString('hex'))
 
   if (options.file) {
+    oprParts.push(Buffer.from('|').toString('hex'))
     oprParts.push(Buffer.from('19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut').toString('hex'))
     oprParts.push(fs.readFileSync(options.file).toString('hex'))
     oprParts.push(Buffer.from(options.type).toString('hex'))
