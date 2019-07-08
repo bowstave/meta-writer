@@ -73,7 +73,18 @@ All the transaction IDs that were created are stored in a file in `$HOME/.meta-w
 
 Please note that the xprv in this file is the master private key of your Metanet node and is NOT the same as the funding key.  The addresses derived from it will contain funds as nodes are created, and having access to this key allows you to add more nodes to this Metanet tree.  **Please keep this secure.**
 
+## Human Readable Derivation Paths  
 
+In order to be able to remembver what you're doing, it is possible to add reminder names after the derivation paths you create. For example:
 
+`meta-writer --path /myalbum/0:familyphotos/1:mum/0 --file ./mum.png --type "image/png"`
+
+or
+
+`meta-writer --path /myalbum/1:wildlife/0:deer/:version1 --file ./deer.png --type "image/png"`
+
+To print the file with the structure use:
+
+`meta-writer --human myalbum`
 
 
