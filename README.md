@@ -1,10 +1,9 @@
 # MetaWriter
 
-Simple command-line tool that let's you upload metanet nodes.
+Simple command-line tool that lets you upload Metanet nodes.
 
 ## Installation instructions
 `npm install -g @bowstave/meta-writer`
-
 
 ## Developer instructions
 
@@ -13,11 +12,11 @@ Simple command-line tool that let's you upload metanet nodes.
 3. `npm install`
 4. For all the examples below, replace `meta-writer` with `node index`
 
-(There is also a send_all.sh script that sends the included photos to the blockchain.)
+(There is also a `send_all.sh` script that sends the included photos to the blockchain.)
 
 ## Setup
 
-In order to use this tool, you will need access to some BSV for funding your transactions.  We suggest creating a new, independent wallet, fund it will a small amount of BSV and use this for your Metanet nodes.
+In order to use this tool, you will need access to some BSV for funding your transactions.  We suggest creating a new, independent wallet, fund it with a small amount of BSV and use this for your Metanet nodes.
 
 You will need to place the master private key (xprv) in a file:
 
@@ -36,7 +35,7 @@ This derivation path should work for a standard ElectrumSV wallet for the addres
 
 ## Usage
 
-Nodes are created hierarchically using a name and a path.  Let's say we want to create a Metanet tree for a photo album called myalbum.  We would first create the root node:
+Nodes are created hierarchically using a name and a path.  Let's say we want to create a Metanet tree for a photo album called `myalbum`.  We would first create the root node:
 
 `meta-writer --path /myalbum/0 "My first album"`
 
@@ -72,8 +71,3 @@ All the transaction IDs that were created are stored in a file in `$HOME/.meta-w
 ```
 
 Please note that the xprv in this file is the master private key of your Metanet node and is NOT the same as the funding key.  The addresses derived from it will contain funds as nodes are created, and having access to this key allows you to add more nodes to this Metanet tree.  **Please keep this secure.**
-
-
-
-
-
