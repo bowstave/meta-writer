@@ -48,6 +48,11 @@ function getFundingKey () {
   return null
 }
 
+// This is the function which strips out each part of the derivation path anything after ':' so that you can name you paths without it affecting the operation of the rest of the code.
+function stripHrdp (value, index, array) {
+  return (value.indexOf(':') !== -1) ? value.substring(0, value.indexOf(':')) : value
+}
+
 function getDataWithExtension (name) {
   const homeDir = process.env.HOME
 
@@ -189,15 +194,27 @@ async function addNode (fundingKey, parentKey, childKey, script) {
     { name: 'file', alias: 'f', type: String },
     { name: 'path', alias: 'p', type: String },
     { name: 'type', alias: 't', type: String },
+    { name: 'human', alias: 'h', type: String },
     { name: 'src', type: String, defaultOption: true }
   ]
 
   const commandLineArgs = require('command-line-args')
+
   const options = commandLineArgs(optionDefinitions)
 
-  if (!options.path) {
-    console.log('You must specify a path for the metanet node')
+  if (!options.path && !options.human) {
+    console.log('You must specify a path for the metanet node, or the name of a local root node to print its structure.')
     process.exit(1)
+  } else if (!options.path) {
+    const checkfile = path.join(process.env.HOME, '.meta-writer', `${options.human}.dat`)
+    if (fs.existsSync(checkfile)) {
+      console.log(options.human)
+      var humandata = getData(options.human)
+      console.log(humandata)
+    } else {
+      console.log('Root node doesn\'t exist with that name.')
+    }
+    process.exit()
   }
 
   if (!options.file && !options.src) {
@@ -219,19 +236,24 @@ async function addNode (fundingKey, parentKey, childKey, script) {
   const data = getData(name)
   let parentKey = null
   let parentPath = null
+  let humanParentPath = null // This is the key for where we will grab the data from in the dat file
+
+  var bareParts = parts.map(stripHrdp) // Strip out human readable part of the derivation path so as not to affect the function of the key derivation.
 
   const masterPrivateKey = bsv.HDPrivateKey(data.xprv)
-  if (parts.length === 1) {
-    if (parts[0] !== '0') {
+  if (bareParts.length === 1) {
+    if (bareParts[0] !== '0') {
       throw new Error('Only one root not is allowed.')
     }
   } else {
-    parentPath = parts.slice(0, -1).join('/')
+    parentPath = bareParts.slice(0, -1).join('/')
     parentKey = masterPrivateKey.deriveChild('m/' + parentPath)
+    humanParentPath = parts.slice(0, -1).join('/') // update data key based on human readable file
   }
 
-  const childPath = parts.join('/')
+  const childPath = bareParts.join('/')
   const childKey = masterPrivateKey.deriveChild('m/' + childPath)
+  const humanChildPath = parts.join('/')
 
   const fundingKey = getFundingKey()
 
@@ -239,7 +261,7 @@ async function addNode (fundingKey, parentKey, childKey, script) {
   oprParts.push('OP_RETURN')
   oprParts.push(Buffer.from('meta').toString('hex'))
   oprParts.push(Buffer.from(childKey.publicKey.toAddress().toString()).toString('hex'))
-  const txid = (parentKey === null ? 'NULL' : data[parentPath])
+  const txid = (parentKey === null ? 'NULL' : data[humanParentPath]) // grab txid from human readable dat
   oprParts.push(Buffer.from(txid).toString('hex'))
 
   if (options.file) {
@@ -261,7 +283,7 @@ async function addNode (fundingKey, parentKey, childKey, script) {
 
   const tx = await addNode(fundingKey, parentKey, childKey, script.toString())
 
-  data[childPath] = tx.toString()
+  data[humanChildPath] = tx.toString()
   dumpData(name, data)
 
   console.log(tx.toString())
